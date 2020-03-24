@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "discord.js": "^12.0.2"
+  },
+
+  "scripts": {
+    "start": "node index"
+  }
+}
