@@ -8,7 +8,6 @@ const nicknameRegex = /(\[\w+\]) (.+)/i;
 client.once('ready', () => console.log('Bot started!'));
 
 const setRole = async (message, data) => {
-    console.log(message.guild.roles.cache);
     let role = message.guild.roles.cache.find(role => role.name === data.name);
 
     if (!role) {
@@ -41,18 +40,22 @@ client.on('message', async (message) => {
         }
 
         try {
-            if (nicknameRegex.test(oldNickname)) {
-                oldNickname = oldNickname.match(nicknameRegex)[2];
-            }
-
-            await message.member.setNickname(`[${prefix}] ${oldNickname}`);
             await setRole(message, {
                 name: prefix,
                 hoist: true,
                 color: 'RANDOM'
             });
-            message.react('👌🏻');
+        } catch (err) {
+            console.log(err);
+        }
 
+        try {
+            if (nicknameRegex.test(oldNickname)) {
+                oldNickname = oldNickname.match(nicknameRegex)[2];
+            }
+
+            await message.member.setNickname(`[${prefix}] ${oldNickname}`);
+            message.react('👌🏻');
             message.delete({ timeout: 5000 });
         } catch (err) {
             message.channel.send(`Ошибка при смене ника: ${err.message}`);
